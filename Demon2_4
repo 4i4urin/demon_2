@@ -1,0 +1,62 @@
+%продолжение номера 13
+% на вход сюда передаточная функция из графика
+% заебало
+
+syms v;
+syms z;
+syms s;
+
+% Журов
+W_ky = (v / 0.015 + 1) * (v / 0.021 + 1) * (v / 0.1 + 1) * (v / 0.5 + 1) / +...
+    ((v / 0.00000027 + 1) * (v + 1) * (v / 1.675 + 1) * (v / 1.795 + 1));
+Ws = 125 / ((0.026 * s + 1) * (0.0055 * s + 1) * s);
+% Wky = (0.033 * s + 1)*(0.026 * s + 1)*(0.0055 * s + 1) /+...
+%     ((21.8 * s + 1)*(0.00042 * s + 1)*(0.00042 * s + 1));
+
+
+% Демон
+% W_ky = (1 / 0.033 * v) * (2.16 * v + 1) / ((1 / 0.005 * v + 1) * (v + 1));
+% T = 0.1;
+
+
+W_ky = simplify(subs(W_ky, v, (z - 1) / (z + 1)));
+[num, den] = numden(W_ky);
+W_ky_z = tf(sym2poly(num), sym2poly(den));
+display(W_ky_z);
+
+disp("Реализацив в виде Z-формы");
+Z_ky = filt(sym2poly(num), sym2poly(den));
+display(Z_ky);
+Te = 0.1;
+% Modeld = c2d(W_ky_z, Te);      % Your discrete transfer function
+% [Nd,Dd]=tfdata(Modeld,'v');
+% display(Nd); display(Dd);
+
+
+% разностное уровнение рот ебал 
+% может правильно а может и нет
+num = sym2poly(num);
+den = sym2poly(den);
+display(num); display(den);
+s = "";
+for i = 1:max(size(num))
+    s = s + num2str(num(i)) + " * e[(k - " + num2str(i - 1) + ")T] ";
+    if i ~= max(size(num))
+        s = s + "+ ";
+    end
+end
+s = s + " = ";
+for i = 1:max(size(den))
+    s = s + num2str(den(i)) + " * e[(k - " + num2str(i - 1) + ")T] ";
+    if i ~= max(size(den))
+        s = s + "+ ";
+    end
+end
+disp(s);
+
+% пункт 14
+% Даааа ебать того рот
+
+
+
+% step(W_transient);
