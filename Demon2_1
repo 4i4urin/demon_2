@@ -128,3 +128,4 @@ semilogx(x_lower, y_lower, 'g');
 grid on
 hold on
 semilogx(x_higher, y_higher);
+
