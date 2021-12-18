@@ -76,3 +76,6 @@ grid on;
 hold on;
 S = stepinfo(Wd);
 disp(S);
+
+
+
